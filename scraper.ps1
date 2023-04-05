@@ -1,5 +1,6 @@
 # This script scrapes the Travis County criminal docket search
 # using an attorney's first and last name, supplied in the input_data.csv
+# Output information about all of an attorney's dockets to output_data.csv
 # Derek Olson Mar 2023
 
 ### SETTING UP THE INITIAL DATA
