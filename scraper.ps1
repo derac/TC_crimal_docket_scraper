@@ -21,7 +21,6 @@ $output_csv_data = @()
 foreach ($attorney in $attorneys_to_search_list) {
     # get the start and end dates, try to make them look the same
     # as they do on the website to not attract as much attention
-
     $start_time = "$(Get-Date -uformat '%Y-%m-%d')T05:00:00.000Z"
     $end_time = "$((Get-Date).AddDays(30) | Get-Date -uformat '%Y-%m-%d')T04:59:59.000Z"
 
