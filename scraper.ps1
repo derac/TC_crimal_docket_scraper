@@ -32,26 +32,23 @@ foreach ($attorney in $attorneys_to_search_list) {
     $docket_search_body = $docket_search_response.Content
     $docket_search_data = ConvertFrom-Json $docket_search_body
 
-    # # loop over the results and include them all, in case more than one match is returned
-    # foreach ($result in $docket_search_data) {
-    #     $booking_number = $result.bookingNumber
-    #     $booking_lookup_url = $booking_lookup_url_template -f $booking_number
-
-    #     # make the call to get the booking
-    #     Write-Host "Scraping $booking_lookup_url"
-    #     $booking_lookup_response = Invoke-WebRequest -Uri $booking_lookup_url
-    #     Start-Sleep -Milliseconds $sleep_time_ms
-    #     $booking_lookup_body = $booking_lookup_response.Content
-    #     $booking_lookup_data = ConvertFrom-Json $booking_lookup_body
-    #     # building the output, the pscustomobject cast is needed
-    #     # because it's what export-csv expects
-    #     $output_csv_data += [PSCustomObject]@{
-    #         name           = $booking_lookup_data.fullName
-    #         booking_date   = $booking_lookup_data.bookingDate
-    #         booking_number = $booking_lookup_data.bookingNumber
-    #         data_url       = $booking_lookup_url
-    #     }
-    # }
+    # loop over the results
+    foreach ($docket in $docket_search_data) {
+        # building the output from the docket information
+        $output_csv_data += [PSCustomObject]@{
+            attorney         = $docket.attorney.fullName
+            defendant        = $docket.defendant.fullName
+            cause            = $docket.cause
+            time             = $docket.timestamp
+            court            = $docket.court
+            buildingAndFloor = $docket.buildingAndFloor
+            type             = $docket.type
+            charge           = $docket.charge
+            appear_name      = $docket.appear.name
+            appear_message   = $docket.appear.message
+            type_description = $docket.typeDesc
+        }
+    }
 }
 
 $output_csv_data | Export-Csv -Path $csv_output_file -NoTypeInformation -Force
